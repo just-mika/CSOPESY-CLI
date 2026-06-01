@@ -19,10 +19,10 @@ std::unique_ptr<ProcessList> initializeProcesses()
 
     p->push_back(Process(0, "N/A", "N/A", 184200, ProcessType::C, "python3", 8204));
     p->push_back(Process(0, "N/A", "N/A", 2391, ProcessType::G, "genshinimpact.exe", 4096));
-    p->push_back(Process(0, "N/A", "N/A", 3107, ProcessType::CG, "unity-editor.exe", 2048));
-    p->push_back(Process(0, "N/A", "N/A", 4452, ProcessType::C, "torch_train_resnet50", 2816));
+    p->push_back(Process(0, "N/A", "N/A", 3107, ProcessType::G, "Blender.exe", 2048));
+    p->push_back(Process(0, "N/A", "N/A", 4452, ProcessType::CG, "VSCode.exe", 2816));
     p->push_back(Process(0, "N/A", "N/A", 5890, ProcessType::G, "chrome.exe", 312));
-
+	
     return p;
 }
 
@@ -30,22 +30,21 @@ std::unique_ptr<GPUList> initializeGPUs()
 {
     std::unique_ptr<GPUList> g = std::make_unique<GPUList>();
     g->push_back(GPU(
-        0, "NVIDIA GeForce RTX 3050 6GB Laptop GPU", 35, 65, PerfState::P0, DriverModel::WDDM, 120, 170,
-        "00000000:01:00.0", true, 4096, 12288,
-        25, ECCMode::Disabled, ComputeMode::Default, MIGMode::Disabled
-    ));
-    /*
-    g->push_back(GPU(
-        1, "NVIDIA GeForce RTX 4090", 42, 78, PerfState::P2, DriverModel::WDDM, 285, 450,
-        "00000000:02:00.0", false, 18432, 24576,
-        87, ECCMode::Disabled, ComputeMode::Default, MIGMode::Disabled
+        0, "NVIDIA GeForce RTX 3050 6GB Laptop GPU", -1, 52, PerfState::P0, DriverModel::WDDM, 10, 95,
+        "00000000:01:00.0", false, 0, 6144,
+        0, ECCMode::NA, ComputeMode::Default, MIGMode::NA
     ));
     g->push_back(GPU(
-        2, "NVIDIA Tesla T4", 0, 52, PerfState::P0, DriverModel::TCC, 70, 70,
-        "00000000:03:00.0", false, 8192, 16384,
-        60, ECCMode::Enabled, ComputeMode::Exclusive, MIGMode::Disabled
-    ));*/
+	    1, "NVIDIA GeForce RTX 4090", 42, 78, PerfState::P2, DriverModel::WDDM, 285, 450,
+	    "00000000:02:00.0", false, 18432, 24576,
+	    87, ECCMode::Disabled, ComputeMode::Default, MIGMode::Disabled
+	));
 
+	g->push_back(GPU(
+	    2, "NVIDIA Tesla T4", 0, 52, PerfState::P0, DriverModel::TCC, 70, 70,
+	    "00000000:03:00.0", false, 8192, 16384,
+	    60, ECCMode::Enabled, ComputeMode::Exclusive, MIGMode::Disabled
+	));
     return g;
 }
 

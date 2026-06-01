@@ -1,16 +1,15 @@
 #pragma once
 #include <iomanip>
-#include <Windows.h>
 #include <time.h>
 #include <iostream>
 #include <vector>
 #include "GPU.h"
 #include "Process.h"
-
-CONSOLE_SCREEN_BUFFER_INFO csbi;
+#include <Windows.h>
 
 typedef std::string String;
 
+CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 void setCursorPosition(int posX, int posY)
 {
@@ -26,31 +25,22 @@ int getYPos()
 	return csbi.dwCursorPosition.Y;
 }
 
-void printDateTime()
-{
-    time_t t = time(0);
-    char str_time[26];
-    ctime_s(str_time, sizeof(str_time), &t);
-
-    std::cout << str_time;
-}
-
 void printAtX(int posX, int width, const String text, bool left = false)
 {
     DWORD written;
-    COORD coord;
-    coord.X = posX;
-    coord.Y = getYPos();
+	int posY = getYPos();
 
     // clear the region first
-    FillConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE), ' ', width, coord, &written);
+    FillConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE), ' ', width, 
+        COORD{(SHORT)posX, (SHORT) posY}, &written);
 
     // then write the text (truncated to width)
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+    setCursorPosition(posX, posY);
+
     if (left)
         std::cout << std::left << std::setw(width) << text.substr(0, width);
-    else    
-    	std::cout << std::right << std::setw(width) << text.substr(0, width);
+    else
+        std::cout << std::right << std::setw(width) << text.substr(0, width);
 }
 
 std::string truncateName(const std::string& str, int limit)
@@ -58,6 +48,15 @@ std::string truncateName(const std::string& str, int limit)
     if (str.length() > limit)
         return str.substr(0, limit - 3) + "...";
     return str;
+}
+
+void printDateTime()
+{
+    time_t t = time(0);
+    char str_time[26];
+    ctime_s(str_time, sizeof(str_time), &t);
+
+    std::cout << str_time;
 }
 
 void printDriverInfo(String nvidiaSmiVer, String driverVer, String cudaVer)
@@ -113,7 +112,8 @@ void printGPUs(GPUList gpus)
     std::cout << "MIG M. |";
 	std::cout << "\n";
     std::cout << "|=========================================+========================+======================|\n";
-    if (gpus.empty())
+    
+	if (gpus.empty())
     {
         std::cout << "| No GPUs found";
         setCursorPosition(90, 8);
@@ -136,8 +136,10 @@ void printGPUs(GPUList gpus)
             printAtX(81, 8, gpu.getEccMode());
             std::cout << " |\n";
 
+			String fanPercent = gpu.getFanPercent() >= 0 ? std::to_string(gpu.getFanPercent()) + "%" : "N/A";
+
             std::cout << "|";
-            printAtX(2, 3, std::to_string(gpu.getFanPercent()) + "%");
+            printAtX(2, 3, fanPercent);
             printAtX(7, 3, std::to_string(gpu.getTemp()) + "C");
             printAtX(15, 2, gpu.getPerfState());
             printAtX(28, 5, std::to_string(gpu.getPowerUsage()) + "W");
@@ -146,7 +148,7 @@ void printGPUs(GPUList gpus)
             std::cout << " |";
             printAtX(44, 9, std::to_string(gpu.getMemUsed()) + "MiB");
             std::cout << " / ";
-            printAtX(57, 9, std::to_string(gpu.getMemUsed()) + "MiB");
+            printAtX(57, 9, std::to_string(gpu.getMemTotal()) + "MiB");
             std::cout << " |";
 			printAtX(72, 4, std::to_string(gpu.getGpuUtil()) + "%");
 			printAtX(79, 10, gpu.getComputeMode());
@@ -197,7 +199,8 @@ void printProcesses(ProcessList processes)
 			printAtX(13, 4, p.getCI());
 			printAtX(26, 7, std::to_string(p.getPID()));
 			printAtX(37, 3, p.getType());
-			printAtX(43, 35, truncateName(p.getProcessName(), 35), true);
+			printAtX(43, 35, 
+                truncateName(p.getProcessName(), 35), true);
 			printAtX(79, 10, std::to_string(p.getMemUsage()) + "MiB");
 			std::cout << " |\n";
 	    }
