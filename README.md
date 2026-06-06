@@ -1,6 +1,4 @@
-========================================================================
 CSOPESY-CLI - Command Line Interface Project
-========================================================================
 
 By: Amon, Mikaela
 
@@ -38,4 +36,3 @@ Notes
 ------------------------------------------------------------------------
 * Ensure all necessary source files (.c / .cpp) are present in the target 
   directory before compiling via the terminal.
-========================================================================
