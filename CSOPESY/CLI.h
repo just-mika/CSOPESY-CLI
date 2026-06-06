@@ -193,6 +193,8 @@ void printProcesses(ProcessList processes)
     {
 	    for (const Process& p : processes)
 	    {
+            if (!p.isReady()) continue;
+
             std::cout << "| ";
             printAtX(2, 3, std::to_string(p.getGPU()));
 			printAtX(8, 4, p.getGI());

@@ -17,7 +17,7 @@ private:
 	State state;
 
 public:
-	Process(int GPU, std::string GI, std::string CI, int pID, ProcessType type, std::string processName, unsigned int memUsage);
+	Process(int GPU, std::string GI, std::string CI, int pID, ProcessType type, std::string processName, unsigned int memUsage, State state = State::READY);
 
 	int getGPU() const;
 

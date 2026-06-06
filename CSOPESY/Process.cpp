@@ -1,6 +1,6 @@
 #include "Process.h"
 
-Process::Process(int GPU, std::string GI, std::string CI, int pID, ProcessType type, std::string processName, unsigned int memUsage)
+Process::Process(int GPU, std::string GI, std::string CI, int pID, ProcessType type, std::string processName, unsigned int memUsage, State state)
 {
 	this->GPU = GPU;
 	this->GI = GI;
@@ -9,7 +9,7 @@ Process::Process(int GPU, std::string GI, std::string CI, int pID, ProcessType t
 	this->type = type;
 	this->processName = processName;
 	this->memUsage = memUsage;
-	this->state = State::READY;
+	this->state = state;
 }
 
 int Process::getGPU() const

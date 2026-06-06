@@ -1,5 +1,6 @@
 #include "CLI.h"
 #include <iostream>
+#include <memory>
 #include "Process.h"
 #include "GPU.h"
 #include <vector>
@@ -16,7 +17,6 @@ struct SystemInfo {
 std::unique_ptr<ProcessList> initializeProcesses()
 {
     std::unique_ptr<ProcessList> p = std::make_unique<ProcessList>();
-
     p->push_back(Process(0, "N/A", "N/A", 184200, ProcessType::C, "python3", 8204));
     p->push_back(Process(0, "N/A", "N/A", 2391, ProcessType::G, "genshinimpact.exe", 4096));
     p->push_back(Process(0, "N/A", "N/A", 3107, ProcessType::G, "Blender.exe", 2048));
@@ -57,6 +57,7 @@ int main()
 	sys.gpus = *initializeGPUs();
     sys.processes = *initializeProcesses();
 
+    system("cls");
     printDateTime();
     printDriverInfo(sys.nvidiaSmiVersion, sys.driverVersion, sys.cudaVersion);
     printGPUs(sys.gpus);
