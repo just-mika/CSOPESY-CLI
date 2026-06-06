@@ -27,9 +27,9 @@ How to Run
    - Make sure g++ is installed and configured in your system PATH.
    - Open your terminal or command prompt.
    - Navigate to the project directory:
-     cd (Project Directory)/CSOPESY
+     `cd (Project Directory)/CSOPESY`
    - Compile the source files using the C++20 standard:
-     g++ -std=c++20 *.c -o program
+     `g++ -std=c++20 *.c -o program`
    - Execute the compiled program:
      program.exe
 
